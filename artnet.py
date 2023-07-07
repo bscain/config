@@ -5,6 +5,8 @@ import logging
 
 _LOGGER = logging.getLogger(__name__)
 
+MAX_BRIGHTNESS = 255
+
 class ArtNet(object):
 
     def __init__(self, targetIP : str, targetPort : int, universes : list):
@@ -17,7 +19,7 @@ class ArtNet(object):
         self._brightness = 255
         self._rgb = (255,255,255)
 
-        self._name = "Bar LEDs"
+        self._name = "Enttec Bar LEDs"
 
         self._TargetIP = targetIP
         self._TargetPort = targetPort
@@ -61,7 +63,7 @@ class ArtNet(object):
     def brightness(self):
         return self._brightness
 
-    async def set_brightness(self, intensity: int):
+    def set_brightness(self, intensity: int):
         # TODO WRITE ME
         self._brightness = intensity
 
@@ -69,10 +71,19 @@ class ArtNet(object):
         # TODO WRITE ME
         _LOGGER.debug(f"Turning Light On to rgb value of: {self._rgb} and brightness of {self._brightness}")
 
-        self._Universes[0].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
-        self._Universes[1].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
-        self._Universes[2].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
-        self._Universes[3].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
+        red = self._rgb[0] * (self._brightness / MAX_BRIGHTNESS)
+        green = self._rgb[1] * (self._brightness / MAX_BRIGHTNESS)
+        blue = self._rgb[2] * (self._brightness / MAX_BRIGHTNESS)
+
+        self._Universes[0].setColor(red, green, blue)
+        self._Universes[1].setColor(red, green, blue)
+        self._Universes[2].setColor(red, green, blue)
+        self._Universes[3].setColor(red, green, blue)
+
+        # self._Universes[0].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
+        # self._Universes[1].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
+        # self._Universes[2].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
+        # self._Universes[3].setColor(self._rgb[0], self._rgb[1], self._rgb[2])
         
         self.sendUniverse(0)
         self.sendUniverse(1)

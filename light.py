@@ -62,14 +62,14 @@ class AwesomeLight(LightEntity):
         """Return the display name of this light."""
         return self._name
 
-    # @property
-    # def brightness(self):
-    #     """Return the brightness of the light.
+    @property
+    def brightness(self):
+        """Return the brightness of the light.
 
-    #     This method is optional. Removing it indicates to Home Assistant
-    #     that brightness is not supported for this light.
-    #     """
-    #     return self._brightness
+        This method is optional. Removing it indicates to Home Assistant
+        that brightness is not supported for this light.
+        """
+        return self._brightness
 
     @property
     def color_mode(self) -> str:
@@ -96,8 +96,8 @@ class AwesomeLight(LightEntity):
         brightness control.
         """
         _LOGGER.debug(f"Arguments passed to turn_on in light.py {kwargs}")
-        if ATTR_BRIGHTNESS in kwargs:
-            self._light.set_brightness(kwargs.get(ATTR_BRIGHTNESS, 255))
+        if "brightness" in kwargs:
+            self._light.set_brightness(kwargs.get("brightness", 255))
         if "rgb_color" in kwargs:
             self._light.set_rgb(kwargs.get("rgb_color", (255,255,255)))
 
